@@ -13,7 +13,7 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
 
-  String _selectedCategory = '';
+  String _selectedCategory = 'Comida';
   final List<String> _categories = [
     'Comida',
     'Transporte',
@@ -54,13 +54,13 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
 
               validator: (value){
                 if (value == null || value.isEmpty) {
-                  return 'Por favor ingrese un monto';
+                  return 'Por favor ingrese una descripcion';
                 }
                 return null;
               },
               decoration:  const InputDecoration(
                 labelText: 'Descripcion',
-                prefixIcon: Icon(Icons.attach_money),
+                prefixIcon: Icon(Icons.description_rounded),
 
               ),
             ),

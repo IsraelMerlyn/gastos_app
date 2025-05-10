@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gastos_app/screens/transaction_form_screen.dart';
 
 class SumaryScreen extends StatelessWidget {
   const SumaryScreen({super.key});
@@ -44,7 +45,9 @@ class SumaryScreen extends StatelessWidget {
               SizedBox(height: 20),
               Center(
                 child: ElevatedButton.icon(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TransactionFormScreen()));
+                  },
                   label: Text('Agregar'),
                   icon: Icon(Icons.add_box_rounded),
                 ),
