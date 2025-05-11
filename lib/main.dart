@@ -1,9 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:gastos_app/providers/transaction_provider.dart';
 import 'package:gastos_app/screens/summary_screen.dart';
 import 'package:gastos_app/theme/app_theme.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(
+        create: (_) => TransactionProvider(),
+      ),
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -12,10 +21,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      theme: AppTheme.lightTheme.copyWith(useMaterial3: true),
-      home: SumaryScreen(
-    ),
+      theme: AppTheme.lightTheme.copyWith(),
+      home: SumaryScreen(),
     );
   }
 }

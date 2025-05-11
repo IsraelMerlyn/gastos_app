@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:gastos_app/models/transaction.dart';
 import 'package:intl/intl.dart';
@@ -44,6 +42,27 @@ class TransactionHistoryScreen extends StatelessWidget {
                       DateFormat.yMMMd().format(transaction.date),
                       style: const TextStyle(color: Colors.grey),
                     ),
+                    trailing: Text(
+                      '\$${transaction.amount.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: transaction.type == TransactionType.income
+                            ? Colors.green
+                            : Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    onLongPress: () {
+                      transactionProvider.deleteTransaction(transaction.id);
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: const Text('Transacción eliminada'),
+                          action: SnackBarAction(
+                            label: 'Deshacer',
+                            onPressed: () {},
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 );
               },

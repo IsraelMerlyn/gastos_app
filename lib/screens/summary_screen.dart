@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gastos_app/screens/transaction_form_screen.dart';
+import 'package:gastos_app/screens/transaction_history_screen.dart';
 import 'package:gastos_app/widgets/expense_chart.dart';
 
 import '../models/expense_data.dart';
@@ -19,16 +20,28 @@ class SumaryScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Resumen de Gastos'),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.history_sharp),
+              onPressed: () {
+                // Navigator.pushNamed(context, '/settings');
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (ExpenseData) => TransactionHistoryScreen()));
+              },
+            ),
+          ],
         ),
         body: Padding(
           padding: EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Text(
-                'Resumen del mes',
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
+              // const Text(
+              //   'Resumen del mes',
+              //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              // ),
               const SizedBox(height: 20),
               const Card(
                 child: ListTile(
@@ -60,8 +73,12 @@ class SumaryScreen extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => TransactionFormScreen()));
                   },
-                  label: Text('Agregar'),
-                  icon: Icon(Icons.add_box_rounded),
+                  label: const Text(
+                    'Agregar',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  icon: Icon(Icons.add_box_rounded,
+                      color: Colors.white, size: 20),
                 ),
               ),
               ExpenseChart(expenseData: expenseData)
