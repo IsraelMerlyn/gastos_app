@@ -14,14 +14,14 @@ Una aplicación móvil desarrollada con Flutter para registrar y gestionar gasto
 
 ## 📸 Capturas de Pantalla (Ejemplos)
 
-<!-- Aquí puedes añadir capturas de pantalla de tu aplicación -->
-<!-- 
+
+
 <p align="center">
-  <img src="link_a_tu_captura_1.png" width="200" alt="Pantalla Principal">
-  <img src="link_a_tu_captura_2.png" width="200" alt="Formulario de Transacción">
-  <img src="link_a_tu_captura_3.png" width="200" alt="Historial">
+  <img src="https://github.com/IsraelMerlyn/gastos_app/blob/main/lib/screenshot/home.png" width="200" alt="Pantalla Principal">
+  <img src="https://github.com/IsraelMerlyn/gastos_app/blob/main/lib/screenshot/history.png" width="200" alt="Formulario de Transacción">
+  <img src="https://github.com/IsraelMerlyn/gastos_app/blob/main/lib/screenshot/formulario.png" width="200" alt="Historial">
 </p>
--->
+
 _(Próximamente se añadirán capturas de pantalla)_
 
 ## 🛠️ Tecnologías y Dependencias Utilizadas
