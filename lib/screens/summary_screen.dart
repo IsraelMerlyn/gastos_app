@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:gastos_app/screens/transaction_form_screen.dart';
+import 'package:gastos_app/widgets/expense_chart.dart';
+
+import '../models/expense_data.dart';
 
 class SumaryScreen extends StatelessWidget {
   const SumaryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<ExpenseData> expenseData = [
+      ExpenseData('Comida', 100),
+      ExpenseData('Transporte', 50),
+      ExpenseData('Entretenimiento', 200),
+      ExpenseData('Salud', 150),
+    ];
     return Scaffold(
         appBar: AppBar(
           title: Text('Resumen de Gastos'),
@@ -16,12 +25,12 @@ class SumaryScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
+              const Text(
                 'Resumen del mes',
                 style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 20),
-              Card(
+              const SizedBox(height: 20),
+              const Card(
                 child: ListTile(
                   leading: Icon(
                     Icons.arrow_downward_outlined,
@@ -31,8 +40,8 @@ class SumaryScreen extends StatelessWidget {
                   subtitle: Text('\$0.0'),
                 ),
               ),
-              SizedBox(height: 20),
-              Card(
+              const SizedBox(height: 20),
+              const Card(
                 child: ListTile(
                   leading: Icon(
                     Icons.arrow_upward_outlined,
@@ -42,16 +51,20 @@ class SumaryScreen extends StatelessWidget {
                   subtitle: Text('\$0.0'),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Center(
                 child: ElevatedButton.icon(
                   onPressed: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=> TransactionFormScreen()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TransactionFormScreen()));
                   },
                   label: Text('Agregar'),
                   icon: Icon(Icons.add_box_rounded),
                 ),
               ),
+              ExpenseChart(expenseData: expenseData)
             ],
           ),
         ));
