@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gastos_app/models/transaction.dart';
+import 'package:gastos_app/providers/transaction_provider.dart';
 import 'package:gastos_app/screens/transaction_form_screen.dart';
 import 'package:gastos_app/screens/transaction_history_screen.dart';
 import 'package:gastos_app/widgets/expense_chart.dart';
+import 'package:provider/provider.dart';
 
 import '../models/expense_data.dart';
 
@@ -10,12 +13,23 @@ class SumaryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<ExpenseData> expenseData = [
-      ExpenseData('Comida', 100),
-      ExpenseData('Transporte', 50),
-      ExpenseData('Entretenimiento', 200),
-      ExpenseData('Salud', 150),
-    ];
+    // final List<ExpenseData> expenseData = [
+    //   ExpenseData('Comida', 100),
+    //   ExpenseData('Transporte', 50),
+    //   ExpenseData('Entretenimiento', 200),
+    //   ExpenseData('Salud', 150),
+    // ];
+    final transactionProvider = Provider.of<TransactionProvider>(context);
+    final transactions = transactionProvider.transactions;
+
+    final totalIncome = transactions
+        .where((transaction) => transaction.type == TransactionType.income)
+        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
+    final totalExpenses = transactions
+        .where((transaction) => transaction.type == TransactionType.expense)
+        .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
     return Scaffold(
         appBar: AppBar(
           title: Text('Resumen de Gastos'),
@@ -43,25 +57,25 @@ class SumaryScreen extends StatelessWidget {
               //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               // ),
               const SizedBox(height: 20),
-              const Card(
+              Card(
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.arrow_downward_outlined,
                     color: Colors.green,
                   ),
-                  title: Text('Ingresos'),
-                  subtitle: Text('\$0.0'),
+                  title: const Text('Ingresos'),
+                  subtitle: Text('\$${totalIncome.toStringAsFixed(2)}'),
                 ),
               ),
               const SizedBox(height: 20),
-              const Card(
+              Card(
                 child: ListTile(
-                  leading: Icon(
+                  leading: const Icon(
                     Icons.arrow_upward_outlined,
                     color: Colors.red,
                   ),
-                  title: Text('Ingresos'),
-                  subtitle: Text('\$0.0'),
+                  title: const Text('Ingresos'),
+                  subtitle: Text('\$${totalExpenses.toStringAsFixed(2)}'),
                 ),
               ),
               const SizedBox(height: 20),
@@ -81,7 +95,7 @@ class SumaryScreen extends StatelessWidget {
                       color: Colors.white, size: 20),
                 ),
               ),
-              ExpenseChart(expenseData: expenseData)
+              ExpenseChart()
             ],
           ),
         ));

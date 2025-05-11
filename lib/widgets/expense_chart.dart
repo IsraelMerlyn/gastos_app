@@ -8,8 +8,7 @@ import '../models/expense_data.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 
 class ExpenseChart extends StatelessWidget {
-  final List<ExpenseData> expenseData;
-  const ExpenseChart({super.key, required this.expenseData});
+  const ExpenseChart({super.key});
 
   @override
   Widget build(BuildContext context) {

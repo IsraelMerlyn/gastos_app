@@ -140,14 +140,18 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text('Guardar Transacción'),
-                  // style: ElevatedButton.styleFrom(
-                  //   padding: const EdgeInsets.symmetric(
-                  //       horizontal: 20, vertical: 15),
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(12),
-                  //   ),
-                  // ),
+                  child: const Text(
+                    'Guardar Transacción',
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
                 ),
               )
             ],
