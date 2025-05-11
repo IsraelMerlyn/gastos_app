@@ -6,7 +6,7 @@ import 'package:gastos_app/screens/transaction_history_screen.dart';
 import 'package:gastos_app/widgets/expense_chart.dart';
 import 'package:provider/provider.dart';
 
-import '../models/expense_data.dart';
+// import '../models/expense_data.dart'; // Comentado si no se usa directamente aquí
 
 class SumaryScreen extends StatefulWidget {
   const SumaryScreen({super.key});
@@ -19,96 +19,157 @@ class _SumaryScreenState extends State<SumaryScreen> {
   @override
   void initState() {
     super.initState();
-    Provider.of<TransactionProvider>(context, listen: false).loadTransactions();
+    // Cargar transacciones al iniciar la pantalla
+    // Usar addPostFrameCallback para asegurar que el contexto esté disponible
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<TransactionProvider>(context, listen: false)
+          .loadTransactions();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final List<ExpenseData> expenseData = [
-    //   ExpenseData('Comida', 100),
-    //   ExpenseData('Transporte', 50),
-    //   ExpenseData('Entretenimiento', 200),
-    //   ExpenseData('Salud', 150),
-    // ];
-    final transactionProvider = Provider.of<TransactionProvider>(context);
-    final transactions = transactionProvider.transactions;
-
-    final totalIncome = transactions
-        .where((transaction) => transaction.type == TransactionType.income)
-        .fold(0.0, (sum, transaction) => sum + transaction.amount);
-
-    final totalExpenses = transactions
-        .where((transaction) => transaction.type == TransactionType.expense)
-        .fold(0.0, (sum, transaction) => sum + transaction.amount);
-
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Resumen de Gastos'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.history_sharp),
-              onPressed: () {
-                // Navigator.pushNamed(context, '/settings');
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (ExpenseData) => TransactionHistoryScreen()));
-              },
+      appBar: AppBar(
+        title: const Text('Resumen Financiero'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history_sharp),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const TransactionHistoryScreen(),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+      body: Consumer<TransactionProvider>(
+        builder: (context, transactionProvider, child) {
+          final transactions = transactionProvider.transactions;
+
+          final totalIncome = transactions
+              .where(
+                  (transaction) => transaction.type == TransactionType.income)
+              .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
+          final totalExpenses = transactions
+              .where(
+                  (transaction) => transaction.type == TransactionType.expense)
+              .fold(0.0, (sum, transaction) => sum + transaction.amount);
+
+          final balance = totalIncome - totalExpenses;
+
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch, // Estirar hijos
+                children: [
+                  _buildSummaryCard(
+                    title: 'Ingresos Totales',
+                    amount: totalIncome,
+                    icon: Icons.arrow_downward_outlined,
+                    color: Colors.green,
+                    context: context,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildSummaryCard(
+                    title: 'Gastos Totales',
+                    amount: totalExpenses,
+                    icon: Icons.arrow_upward_outlined,
+                    color: Colors.red,
+                    context: context,
+                  ),
+                  const SizedBox(height: 12),
+                  _buildSummaryCard(
+                    title: 'Balance General',
+                    amount: balance,
+                    icon: Icons.account_balance_wallet_outlined,
+                    color: balance >= 0 ? Colors.blue : Colors.orange,
+                    context: context,
+                  ),
+                  const SizedBox(height: 24),
+                  if (transactions
+                      .where((t) => t.type == TransactionType.expense)
+                      .isNotEmpty)
+                    const Text(
+                      'Distribución de Gastos',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.center,
+                    ),
+                  if (transactions
+                      .where((t) => t.type == TransactionType.expense)
+                      .isNotEmpty)
+                    SizedBox(
+                      height: 200, // Ajusta la altura según sea necesario
+                      child: ExpenseChart(),
+                    ),
+                  const SizedBox(height: 20),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TransactionFormScreen(),
+            ),
+          );
+        },
+        label: const Text('Agregar'),
+        icon: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget _buildSummaryCard({
+    required String title,
+    required double amount,
+    required IconData icon,
+    required Color color,
+    required BuildContext context,
+  }) {
+    return Card(
+      elevation: 4,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Row(
+          children: [
+            Icon(icon, color: color, size: 30),
+            const SizedBox(width: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '\$${amount.toStringAsFixed(2)}',
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: color,
+                      ),
+                ),
+              ],
             ),
           ],
         ),
-        body: Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // const Text(
-              //   'Resumen del mes',
-              //   style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              // ),
-              const SizedBox(height: 20),
-              Card(
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.arrow_downward_outlined,
-                    color: Colors.green,
-                  ),
-                  title: const Text('Ingresos'),
-                  subtitle: Text('\$${totalIncome.toStringAsFixed(2)}'),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Card(
-                child: ListTile(
-                  leading: const Icon(
-                    Icons.arrow_upward_outlined,
-                    color: Colors.red,
-                  ),
-                  title: const Text('Ingresos'),
-                  subtitle: Text('\$${totalExpenses.toStringAsFixed(2)}'),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Center(
-                child: ElevatedButton.icon(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => TransactionFormScreen()));
-                  },
-                  label: const Text(
-                    'Agregar',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                  icon: Icon(Icons.add_box_rounded,
-                      color: Colors.white, size: 20),
-                ),
-              ),
-              ExpenseChart()
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
