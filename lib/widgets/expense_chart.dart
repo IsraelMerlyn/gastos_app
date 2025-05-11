@@ -31,7 +31,12 @@ class ExpenseChart extends StatelessWidget {
         data: categoryTotals.entries.toList(),
         domainFn: (MapEntry<String, double> entry, _) => entry.key,
         measureFn: (MapEntry<String, double> entry, _) => entry.value,
-        colorFn: (_, __) => charts.MaterialPalette.blue.shadeDefault,
+        colorFn: (MapEntry<String, double> entry, _) {
+          final colors =
+              charts.MaterialPalette.getOrderedPalettes(categoryTotals.length);
+          return colors[categoryTotals.keys.toList().indexOf(entry.key)]
+              .shadeDefault;
+        },
       )
     ];
     return Container(

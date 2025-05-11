@@ -8,8 +8,19 @@ import 'package:provider/provider.dart';
 
 import '../models/expense_data.dart';
 
-class SumaryScreen extends StatelessWidget {
+class SumaryScreen extends StatefulWidget {
   const SumaryScreen({super.key});
+
+  @override
+  State<SumaryScreen> createState() => _SumaryScreenState();
+}
+
+class _SumaryScreenState extends State<SumaryScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Provider.of<TransactionProvider>(context, listen: false).loadTransactions();
+  }
 
   @override
   Widget build(BuildContext context) {
