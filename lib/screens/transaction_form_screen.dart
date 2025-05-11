@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last
+
 import 'package:flutter/material.dart';
 import 'package:gastos_app/models/transaction.dart';
 import 'package:gastos_app/providers/transaction_provider.dart';
@@ -5,7 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionFormScreen extends StatefulWidget {
-  const TransactionFormScreen({super.key});
+  final Transaction? transaction;
+  const TransactionFormScreen({super.key, this.transaction});
 
   @override
   State<TransactionFormScreen> createState() => _TransactionFormScreenState();
@@ -122,27 +125,60 @@ class _TransactionFormScreenState extends State<TransactionFormScreen> {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
+                    // if (_formKey.currentState!.validate()) {
+                    //   // Aquí puedes agregar la lógica para guardar la transacción
+                    //   final newTransaction = Transaction(
+                    //       id: const Uuid().v4(),
+                    //       category: _selectedCategory,
+                    //       amount: double.parse(_amountController.text),
+                    //       type: _selectedType,
+                    //       date: DateTime.now());
+
+                    //   Provider.of<TransactionProvider>(context, listen: false)
+                    //       .addTransaction(newTransaction);
+
+                    //   ScaffoldMessenger.of(context).showSnackBar(
+                    //     const SnackBar(content: Text('Transacción guardada')),
+                    //   );
+                    //   Navigator.pop(context);
+                    // }
                     if (_formKey.currentState!.validate()) {
-                      // Aquí puedes agregar la lógica para guardar la transacción
-                      final newTransaction = Transaction(
-                          id: const Uuid().v4(),
-                          category: _selectedCategory,
-                          amount: double.parse(_amountController.text),
-                          type: _selectedType,
-                          date: DateTime.now());
-
-                      Provider.of<TransactionProvider>(context, listen: false)
-                          .addTransaction(newTransaction);
-
+                      final transactionProvider =
+                          Provider.of<TransactionProvider>(context,
+                              listen: false);
+                      if (widget.transaction == null) {
+                        transactionProvider.addTransaction(
+                          Transaction(
+                            id: const Uuid().v4(),
+                            category: _selectedCategory,
+                            amount: double.parse(_amountController.text),
+                            type: _selectedType,
+                            date: DateTime.now(),
+                          ),
+                        );
+                      } else {
+                        widget.transaction!.category = _selectedCategory;
+                        widget.transaction!.amount =
+                            double.parse(_amountController.text);
+                        widget.transaction!.type = _selectedType;
+                        // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+                        transactionProvider.notifyListeners();
+                      }
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Transacción guardada')),
+                        SnackBar(
+                          content: Text(widget.transaction == null
+                              ? 'Transacción guardada'
+                              : 'Transacción actualizada'),
+                        ),
                       );
                       Navigator.pop(context);
                     }
                   },
-                  child: const Text(
-                    'Guardar Transacción',
-                    style: TextStyle(
+                  child: Text(
+                    widget.transaction == null
+                        ? 'Guardar Transacción'
+                        : 'Actualizar Transacción',
+                    style: const TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                   style: ElevatedButton.styleFrom(

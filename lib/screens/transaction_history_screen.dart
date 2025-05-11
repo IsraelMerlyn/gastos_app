@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gastos_app/models/transaction.dart';
+import 'package:gastos_app/screens/transaction_form_screen.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -51,6 +52,14 @@ class TransactionHistoryScreen extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TransactionFormScreen(
+                                    transaction: transaction,
+                                  )));
+                    },
                     onLongPress: () {
                       transactionProvider.deleteTransaction(transaction.id);
                       ScaffoldMessenger.of(context).showSnackBar(
