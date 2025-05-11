@@ -70,46 +70,5 @@ _(Próximamente se añadirán capturas de pantalla)_
     *   Toca una transacción para editarla o deslízala para eliminarla.
 
 
-## 🚀 Configuración del Proyecto
 
-1.  **Clonar el repositorio**:
-    ```bash
-    git clone https://tu_repositorio/gastos_app.git
-    cd gastos_app
-    ```
-2.  **Instalar dependencias de Flutter**:
-    ```bash
-    flutter pub get
-    ```
-3.  **Ejecutar la aplicación**:
-    Asegúrate de tener un emulador en ejecución o un dispositivo conectado.
-    ```bash
-    flutter run
-    ```
 
-## 📋 Uso
-
-1.  **Pantalla Principal (Resumen)**:
-    *   Visualiza tus ingresos, gastos y balance.
-    *   Observa el gráfico de distribución de gastos.
-    *   Usa el botón (+) en la AppBar para añadir una nueva transacción.
-    *   Accede al historial de transacciones desde el icono de historial en la AppBar.
-
-2.  **Formulario de Transacción**:
-    *   Ingresa el monto y la descripción.
-    *   Selecciona la categoría, el tipo (gasto/ingreso) y la fecha.
-    *   Guarda la transacción.
-
-3.  **Historial de Transacciones**:
-    *   Ve una lista de todas tus transacciones.
-    *   Toca una transacción para editarla o deslízala para eliminarla.
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Si deseas contribuir, por favor:
-
-1.  Haz un Fork del proyecto.
-2.  Crea una nueva rama (`git checkout -b feature/nueva-funcionalidad`).
-3.  Realiza tus cambios y haz commit (`git commit -m 'Añade nueva funcionalidad'`).
-4.  Haz Push a la rama (`git push origin feature/nueva-funcionalidad`).
-5.  Abre un Pull Request.
